@@ -1,23 +1,33 @@
-var express = require('express');
-var bodyparser = require('body-parser');
+var express = require("express");
+var bodyParser = require("body-parser");
+var moment = require("moment");
+var router = express.Router();
 
-var connection = require('./Dbconnection');
-var student = require('./Controllers/student');
-var payment = require('./Controllers/payment');
+app = express();
 
-var app = express();
-app.use(bodyparser.urlencoded({extended: true})); //support x-www-form-urlencoded
-app.use(bodyparser.json());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
-app.use('/sinhvien',student);
-app.use('/transaction',payment);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-var server = app.listen(10110, function() {
-  console.log('Server listening on port ' + server.address().port);
-  connection.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+router.get("/", (req, res) => {
+    console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
+});
+
+router.post("/api/logger", (req, res) => {
+    console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
+    console.log(req.body);
+    res.json(req.body);
+});
+
+app.use(router);
+
+var server = app.listen(11111, function() {
+    console.log('Server listening on port ' + server.address().port);
 });
 
 module.exports = app;
