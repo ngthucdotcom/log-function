@@ -14,14 +14,18 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-router.get("/", (req, res) => {
+router.get("/", () => {
     console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
 });
 
 router.post("/api/logger", (req, res) => {
-    console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
+    // console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
     console.log(req.body);
-    res.json(req.body);
+    // console.log(req.body.message);
+    // res.json(req.body);
+    res.json({
+        "received": moment().format("YYYY-MM-DD HH:mm:ss")
+    });
 });
 
 app.use(router);
